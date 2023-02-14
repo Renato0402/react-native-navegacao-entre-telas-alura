@@ -7,6 +7,7 @@ import Texto from '../../../componentes/Texto';
 
 import {useNavigation} from '@react-navigation/native';
 
+
 export default function Detalhes({nome, produtor, descricao, preco}) {
   const {botaoComprar} = useTextos();
   const navigation = useNavigation();
@@ -24,10 +25,9 @@ export default function Detalhes({nome, produtor, descricao, preco}) {
       <TouchableOpacity
         style={estilos.botao}
         onPress={() =>
-          navigation.navigate('HomeScreen', {
+          navigation.navigate('Resumo', {
             compra: {
               nome,
-              timestamp: +new Date(),
             },
           })
         }>

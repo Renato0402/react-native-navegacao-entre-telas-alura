@@ -1,6 +1,14 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import { Text, View, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import {
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+} from 'react-native';
+import {useRoute, useNavigation} from '@react-navigation/native';
 
 import useTextos from '../../hooks/useTextos';
 
@@ -13,48 +21,64 @@ export default function Resumo() {
     topoCompra,
     tituloCompra,
     botaoHomeCompra,
-    botaoProdutorCompra
+    botaoProdutorCompra,
   } = useTextos();
 
-  return <View style={estilos.tela}>
-    <View style={estilos.topo}>
-      <TouchableOpacity
-        style={estilos.topoVoltar}
-        onPress={() => { }}
-      >
-        <VoltarSVG />
-      </TouchableOpacity>
+  const route = useRoute();
 
-      <Text style={estilos.topoTexto}>{topoCompra}</Text>
-    </View>
+  const navigation = useNavigation();
 
-    <View style={estilos.conteudo}>
-      <Image source={sucesso} style={estilos.sucesso} />
+  const nomeCompra = route.params?.compra.nome;
+  const mensagemCompleta = mensagemCompra?.replace('$NOME', nomeCompra);
 
-      <View style={estilos.textos}>
-        <Text style={estilos.titulo}>{tituloCompra}</Text>
-        <Text style={estilos.mensagem}>{mensagemCompra}</Text>
-
+  return (
+    <ScrollView style={estilos.tela}>
+      <View style={estilos.topo}>
         <TouchableOpacity
-          style={estilos.botao}
-          onPress={() => {}}>
-          <Text style={estilos.textoBotao}>{botaoHomeCompra}</Text>
+          style={estilos.topoVoltar}
+          onPress={() => {
+            navigation.goBack();
+          }}>
+          <VoltarSVG />
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={[estilos.botao, estilos.botaoProdutor]}
-          onPress={() => {}}>
-          <Text style={[estilos.textoBotao, estilos.textoBotaoProdutor ]}>{botaoProdutorCompra}</Text>
-        </TouchableOpacity>
+        <Text style={estilos.topoTexto}>{topoCompra}</Text>
       </View>
-    </View>
-  </View>
+
+      <View style={estilos.conteudo}>
+        <Image source={sucesso} style={estilos.sucesso} />
+
+        <View style={estilos.textos}>
+          <Text style={estilos.titulo}>{tituloCompra}</Text>
+          <Text style={estilos.mensagem}>{mensagemCompleta}</Text>
+
+          <TouchableOpacity
+            style={estilos.botao}
+            onPress={() => {
+              navigation.navigate('HomeScreen');
+            }}>
+            <Text style={estilos.textoBotao}>{botaoHomeCompra}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[estilos.botao, estilos.botaoProdutor]}
+            onPress={() => {
+              navigation.pop(2);
+            }}>
+            <Text style={[estilos.textoBotao, estilos.textoBotaoProdutor]}>
+              {botaoProdutorCompra}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </ScrollView>
+  );
 }
 
 const estilos = StyleSheet.create({
   tela: {
     flex: 1,
-    backgroundColor: "#FFF",
+    backgroundColor: '#FFF',
   },
   topo: {
     zIndex: 1,
@@ -64,7 +88,7 @@ const estilos = StyleSheet.create({
 
     backgroundColor: '#fff',
 
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -94,7 +118,7 @@ const estilos = StyleSheet.create({
     zIndex: 0,
   },
   sucesso: {
-    width: "100%",
+    width: '100%',
     height: undefined,
     aspectRatio: 360 / 351,
   },
@@ -105,32 +129,33 @@ const estilos = StyleSheet.create({
     fontSize: 26,
     lineHeight: 42,
     fontWeight: 'bold',
-    color: "#464646",
+    color: '#464646',
   },
   mensagem: {
-    color: "#A3A3A3",
+    color: '#A3A3A3',
     fontSize: 16,
     lineHeight: 26,
   },
   botao: {
     marginTop: 16,
-    backgroundColor: "#2A9F85",
+    backgroundColor: '#2A9F85',
     paddingVertical: 16,
     borderRadius: 6,
   },
   textoBotao: {
-    textAlign: "center",
-    color: "#ffffff",
+    textAlign: 'center',
+    color: '#ffffff',
     fontSize: 16,
     lineHeight: 26,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   botaoProdutor: {
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     borderWidth: 1,
-    borderColor: "#ECECEC",
+    borderColor: '#ECECEC',
+    marginBottom: 10,
   },
   textoBotaoProdutor: {
-    color: "#464646",
+    color: '#464646',
   },
 });
